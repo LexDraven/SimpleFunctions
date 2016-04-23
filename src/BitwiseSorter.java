@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class BitwiseSorter {
     ArrayList<String> list;
-    LinkedList <String> [] digits = new LinkedList[10];
+    Queue<String>[] digits = new Queue[10];
     int [] mainArray;
-    private int lengthDidits=0;
+    private int lengthBits = 0;
 
     public BitwiseSorter(int[] mainArray) {
         this.mainArray = mainArray;
@@ -25,15 +26,15 @@ public class BitwiseSorter {
     private void toList(){
         for (int i=0; i<mainArray.length; i++){
             String value = Integer.toString(mainArray[i]);
-            if (value.length()>lengthDidits){
-                lengthDidits = value.length();
+            if (value.length()> lengthBits){
+                lengthBits = value.length();
             }
             list.add(value);
         }
         for (int i=0; i<list.size(); i++){
             String temp = list.get(i);
-            if (temp.length()<lengthDidits) {
-                while (temp.length()<lengthDidits){
+            if (temp.length()< lengthBits) {
+                while (temp.length()< lengthBits){
                     temp = "0"+temp;
                 }
                 list.set(i,temp);
@@ -61,17 +62,17 @@ public class BitwiseSorter {
     }
 
     public void bitwiseSort(){
-        for (int position = lengthDidits-1; position>-1; position--) {
+        for (int position = lengthBits -1; position>-1; position--) {
             for (String st: list){
                 String oneDigit = st.substring(position,position+1);
                 int index = Integer.parseInt(oneDigit);
-                digits[index].addLast(st);
+                digits[index].offer(st);
             }
             list.clear();
             for (int pos = 0; pos<10;pos++){
                 if (digits[pos].size() > 0) {
                     while (digits[pos].iterator().hasNext()){
-                        String val = digits[pos].pollFirst();
+                        String val = digits[pos].poll();
                         list.add(val);
                     }
                 }
