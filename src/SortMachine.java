@@ -160,9 +160,7 @@ public class SortMachine<T extends Comparable> {
     }
 
     private void recMergeSort(T[] array, int lowerBorder, int upperBorder) {
-        if (lowerBorder == upperBorder) {
-            return;
-        } else {
+        if (lowerBorder != upperBorder) {
             int middle = (lowerBorder + upperBorder) / 2;
             recMergeSort(array, lowerBorder, middle);
             recMergeSort(array, middle + 1, upperBorder);
@@ -213,7 +211,7 @@ public class SortMachine<T extends Comparable> {
         System.out.println();
     }
 
-    public boolean isSorted() {
+    private boolean isSorted() {
         if (tempArray.length < 1) {
             return false;
         }
@@ -258,9 +256,7 @@ public class SortMachine<T extends Comparable> {
     }
 
     private void recQuickSort(int left, int right) {
-        if (right - left <= 0) {
-            return;
-        } else {
+        if (right - left > 0) {
             T pivot = tempArray[right];
             int partition = partIt(left, right, pivot);
             recQuickSort(left, partition - 1);

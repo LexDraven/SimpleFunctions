@@ -1,7 +1,7 @@
 public class StartClass {
 
     public static void main(String[] args) {
-        Integer [] mass = getArrayInteger(10000);
+        Integer [] mass = getArrayInteger(20000);
         Integer [] mass2 = mass.clone();
         Integer [] mass3 = mass.clone();
         Integer [] mass4 = mass.clone();
@@ -10,12 +10,10 @@ public class StartClass {
 
         long [] massiv = getLongArray(100000);
         BitwiseSorter bitwiseSorter = new BitwiseSorter(massiv);
-        bitwiseSorter.printArray();
         long begin = System.currentTimeMillis();
         bitwiseSorter.bitwiseSort();
         long result = System.currentTimeMillis() - begin;
         System.out.println("Bitwise sorting  - "+result + " millisec");
-        bitwiseSorter.printArray();
 
         SortMachine sortMachine = new SortMachine(mass);
         sortMachine.setShowSortingSpeed(true);
@@ -43,7 +41,7 @@ public class StartClass {
     public static long [] getLongArray (int size){
         long [] mass = new long[size];
         for (int i=0; i<mass.length;i++){
-            mass[i] = (long) (Math.random()*(100000));
+            mass[i] = (long) (Math.random()*(size*3));
         }
         return mass;
     }
