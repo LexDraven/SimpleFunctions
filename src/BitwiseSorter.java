@@ -2,14 +2,25 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+//Поразрядная сортировка, медленнее быстрых сортировок, но быстрее чем тривиальные сортировки
+//работает только для положительных цифровых массивов int и long
 public class BitwiseSorter {
     private ArrayList<String> list;
     private Queue<String>[] digits = new Queue[10];
-    private int [] mainArray;
+    private long [] mainArray;
     private int lengthBits = 0;
 
     public BitwiseSorter(int[] mainArray) {
+        convertIntToLong(mainArray);
+        init();
+    }
+
+    public BitwiseSorter(long[] mainArray) {
         this.mainArray = mainArray;
+        init();
+    }
+
+    private  void  init() {
         list = new ArrayList<>(mainArray.length);
         toStringList();
         for (int i=0; i<10; i++){
@@ -18,19 +29,19 @@ public class BitwiseSorter {
     }
 
     public void setNewArray(int[] newArray) {
-        mainArray = newArray;
+        convertIntToLong(newArray);
         list = new ArrayList<>(mainArray.length);
         toStringList();
     }
 
     private void toStringList(){
-        for (int arrayElement : mainArray) {
-            if (Integer.toString(arrayElement).length() > lengthBits) {
-                lengthBits = Integer.toString(arrayElement).length();
+        for (long arrayElement : mainArray) {
+            if (Long.toString(arrayElement).length() > lengthBits) {
+                lengthBits = Long.toString(arrayElement).length();
             }
         }
-        for (int aMainArray : mainArray) {
-            String temp = Integer.toString(aMainArray);
+        for (long aMainArray : mainArray) {
+            String temp = Long.toString(aMainArray);
             if (temp.length() < lengthBits) {
                 while (temp.length() < lengthBits) {
                     temp = "0" + temp;
@@ -40,19 +51,24 @@ public class BitwiseSorter {
         }
     }
 
-    public int[] getArray(){
-        backToInt();
+    public int[] getIntArray(){
+        backToLong();
+        return convertLongToInt();
+    }
+
+    public long[] getLongArray(){
+        backToLong();
         return mainArray;
     }
 
-    public int [] getSortedArray() {
+    public long [] getSortedLongArray() {
         bitwiseSort();
-        return getArray();
+        return getLongArray();
     }
 
-    private void backToInt() {
+    private void backToLong() {
         for (int i=0; i<list.size(); i++) {
-            mainArray[i] = Integer.parseInt(list.get(i));
+            mainArray[i] = Long.parseLong(list.get(i));
         }
     }
 
@@ -76,8 +92,9 @@ public class BitwiseSorter {
     }
 
     public void printArray() {
+        backToLong();
         int max = 100;
-        for (int t : mainArray) {
+        for (long t : mainArray) {
             System.out.print(t + ", ");
             max--;
             if (max <= 0) {
@@ -85,5 +102,20 @@ public class BitwiseSorter {
             }
         }
         System.out.println();
+    }
+
+    private void convertIntToLong(int [] array) {
+        mainArray = new long[array.length];
+        for (int i=0; i<array.length-1;i++){
+            mainArray[i] = (long) array[i];
+        }
+    }
+
+    private int[] convertLongToInt() {
+        int [] tempArray = new int[mainArray.length];
+        for (int i=0; i<mainArray.length-1;i++){
+            tempArray[i] = (int) mainArray[i];
+        }
+        return tempArray;
     }
 }
