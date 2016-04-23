@@ -3,6 +3,17 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+//Класс для сортировки массивов и коллекций различными методами:
+// - пузырьковая сортировка
+// - сортировка методом выбора
+// - сортировка методом вставки
+// - сортировка методом слияния
+// - сортировка методом Шелла
+// - быстрая сортировка
+//Есть возможность вывода 100 первых символов массива, вывода времени потраченного на каждую сортировку
+//Принимает только классы имплементирующие Comparable
+
+
 public class SortMachine<T extends Comparable> {
     private T[] tempArray = null;
     private int count = 0;
@@ -21,17 +32,16 @@ public class SortMachine<T extends Comparable> {
         return Arrays.asList(tempArray);
     }
 
-
     public boolean isShowTimeResults() {
         return showTimeResults;
     }
 
-    public void setNewArray(T[] temparray) {
-        tempArray = temparray;
+    public void setNewArray(T[] tempArray) {
+        this.tempArray = tempArray;
         if (!isComparable()) {
             System.out.println("Cant be sorted!");
         } else {
-            count = temparray.length;
+            count = tempArray.length;
             if (count == 0) {
                 System.out.println("Empty array!");
             }
@@ -162,7 +172,6 @@ public class SortMachine<T extends Comparable> {
             recMergeSort(array, middle + 1, upperBorder);
             merge(array, lowerBorder, middle + 1, upperBorder);
         }
-
     }
 
     public void mergeSort() {
@@ -195,7 +204,7 @@ public class SortMachine<T extends Comparable> {
         }
     }
 
-    public void print() {
+    public void printArray() {
         int max = 100;
         for (T t : tempArray) {
             System.out.print(t + ", ");
@@ -208,10 +217,12 @@ public class SortMachine<T extends Comparable> {
     }
 
     public boolean isSorted(){
+        if (tempArray.length<1) {
+            return false;
+        }
         T minimum = tempArray[0];
         for (T temp:tempArray){
             if (minimum.compareTo(temp)>0){
-                showTimeResults("check",false);
                 return false;
             }
         }
@@ -252,9 +263,9 @@ public class SortMachine<T extends Comparable> {
             return;
         } else {
             T pivot = tempArray[right];
-            int partitition = partIt(left,right,pivot);
-            recQuickSort(left,partitition-1);
-            recQuickSort(partitition+1,right);
+            int partition = partIt(left,right,pivot);
+            recQuickSort(left,partition-1);
+            recQuickSort(partition+1,right);
         }
     }
 

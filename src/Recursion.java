@@ -1,5 +1,5 @@
 
-public class Recursia {
+public class Recursion {
 
     public int getTriangleDigit(int num){
         if (num==1){

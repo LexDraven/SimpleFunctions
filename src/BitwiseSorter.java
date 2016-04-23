@@ -3,9 +3,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BitwiseSorter {
-    ArrayList<String> list;
-    Queue<String>[] digits = new Queue[10];
-    int [] mainArray;
+    private ArrayList<String> list;
+    private Queue<String>[] digits = new Queue[10];
+    private int [] mainArray;
     private int lengthBits = 0;
 
     public BitwiseSorter(int[] mainArray) {
@@ -24,10 +24,9 @@ public class BitwiseSorter {
     }
 
     private void toStringList(){
-        for (int i=0; i<mainArray.length; i++){
-            String value = Integer.toString(mainArray[i]);
-            if (value.length()> lengthBits){
-                lengthBits = value.length();
+        for (int arrayElement : mainArray) {
+            if (Integer.toString(arrayElement).length() > lengthBits) {
+                lengthBits = Integer.toString(arrayElement).length();
             }
         }
         for (int aMainArray : mainArray) {
@@ -53,9 +52,7 @@ public class BitwiseSorter {
 
     private void backToInt() {
         for (int i=0; i<list.size(); i++) {
-            mainArray[i]=0;
-            int value = Integer.parseInt(list.get(i));
-            mainArray[i] = value;
+            mainArray[i] = Integer.parseInt(list.get(i));
         }
     }
 
