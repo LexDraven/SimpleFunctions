@@ -29,16 +29,15 @@ public class BitwiseSorter {
             if (value.length()> lengthBits){
                 lengthBits = value.length();
             }
-            list.add(value);
         }
-        for (int i=0; i<list.size(); i++){
-            String temp = list.get(i);
+        for (int i=0; i<mainArray.length; i++){
+            String temp = Integer.toString(mainArray[i]);
             if (temp.length()< lengthBits) {
                 while (temp.length()< lengthBits){
                     temp = "0"+temp;
                 }
-                list.set(i,temp);
             }
+            list.add(temp);
         }
     }
 
@@ -49,11 +48,10 @@ public class BitwiseSorter {
 
     public int [] getSortedArray() {
         bitwiseSort();
-        return mainArray;
+        return getArray();
     }
 
     private void backToInt() {
-
         for (int i=0; i<list.size(); i++) {
             mainArray[i]=0;
             int value = Integer.parseInt(list.get(i));
@@ -78,10 +76,10 @@ public class BitwiseSorter {
                 }
             }
         }
-        backToInt();
     }
 
     public void printArray() {
+        backToInt();
         int max = 100;
         for (int t : mainArray) {
             System.out.print(t + ", ");
