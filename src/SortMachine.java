@@ -241,5 +241,39 @@ public class SortMachine<T extends Comparable> {
         showTimeResults("Shell method",false);
     }
 
+    public void quickSort(){
+        showTimeResults("quick",true);
+        recQuickSort(0,count-1);
+        showTimeResults("quick",false);
+    }
+
+    private void recQuickSort(int left, int right) {
+        if (right - left <= 0) {
+            return;
+        } else {
+            T pivot = tempArray[right];
+            int partitition = partIt(left,right,pivot);
+            recQuickSort(left,partitition-1);
+            recQuickSort(partitition+1,right);
+        }
+    }
+
+    private int partIt(int left, int right, T pivot) {
+        int leftP = left-1;
+        int rightP = right;
+        while (true){
+            while (tempArray[++leftP].compareTo(pivot)<0);
+            while (rightP>0 && tempArray[--rightP].compareTo(pivot)>0);
+            if (leftP >= rightP) {
+                break;
+            }
+            else {
+                changePlaces(leftP,rightP);
+            }
+        }
+        changePlaces(leftP,right);
+        return leftP;
+    }
+
 }
 
