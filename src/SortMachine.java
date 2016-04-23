@@ -218,5 +218,28 @@ public class SortMachine<T extends Comparable> {
         return true;
     }
 
+    public void methodShellSort(){
+        showTimeResults("Shell method",true);
+        int begin, end;
+        T temp;
+        int h = 1;
+        while (h<=count/3){
+            h=h*3+1;
+        }
+        while (h > 0) {
+            for (end=h;end<count;end++) {
+                temp = tempArray[end];
+                begin = end;
+                while (begin > h - 1 && (tempArray[begin - h].compareTo(temp) >= 0)) {
+                    tempArray[begin] = tempArray[begin-h];
+                    begin-=h;
+                }
+                tempArray[begin] = temp;
+            }
+            h=(h-1)/3;
+        }
+        showTimeResults("Shell method",false);
+    }
+
 }
 

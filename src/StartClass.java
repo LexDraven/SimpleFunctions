@@ -6,6 +6,10 @@ public class StartClass {
         SortMachine sortMachine = new SortMachine(mass);
         sortMachine.setShowTimeResults(true);
         sortMachine.print();
+        sortMachine.methodShellSort();
+        sortMachine.print();
+        sortMachine.setNewArray(getArray(20000));
+        sortMachine.print();
         sortMachine.mergeSort();
         sortMachine.print();
         sortMachine.setNewArray(getArray(20000));
@@ -20,7 +24,6 @@ public class StartClass {
         sortMachine.print();
         sortMachine.insertionSort();
         sortMachine.print();
-        System.out.println(sortMachine.isSorted());
     }
 
     public static Integer [] getArray (int size){
