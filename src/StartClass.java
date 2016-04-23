@@ -17,19 +17,19 @@ public class StartClass {
         System.out.println("Bitwise sorting  - "+result + " millisec");
         bitwiseSorter.printArray();
 
-//        SortMachine sortMachine = new SortMachine(mass);
-//        sortMachine.setShowSortingSpeed(true);
-//        sortMachine.quickSort();
-//        sortMachine.setNewArray(mass3);
-//        sortMachine.mergeSort();
-//        sortMachine.setNewArray(mass2);
-//        sortMachine.methodShellSort();
-//        sortMachine.setNewArray(mass4);
-//        sortMachine.insertionSort();
-//        sortMachine.setNewArray(mass5);
-//        sortMachine.selectedSort();
-//        sortMachine.setNewArray(mass6);
-//        sortMachine.bubbleSort();
+        SortMachine sortMachine = new SortMachine(mass);
+        sortMachine.setShowSortingSpeed(true);
+        sortMachine.quickSort();
+        sortMachine.setNewArray(mass3);
+        sortMachine.mergeSort();
+        sortMachine.setNewArray(mass2);
+        sortMachine.methodShellSort();
+        sortMachine.setNewArray(mass4);
+        sortMachine.insertionSort();
+        sortMachine.setNewArray(mass5);
+        sortMachine.selectedSort();
+        sortMachine.setNewArray(mass6);
+        sortMachine.bubbleSort();
     }
 
     public static int [] getArray (int size){
