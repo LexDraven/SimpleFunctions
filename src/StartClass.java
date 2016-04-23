@@ -10,9 +10,7 @@ public class StartClass {
         Integer [] mass5 = mass.clone();
         Integer [] mass6 = mass.clone();
 
-        int [] massiv = getArray(100000); //701-685-687
-        //614-621-612
-        //
+        int [] massiv = getArray(10000);
         BitwiseSorter bitwiseSorter = new BitwiseSorter(massiv);
         long begin = System.currentTimeMillis();
         bitwiseSorter.bitwiseSort();
@@ -20,26 +18,26 @@ public class StartClass {
         System.out.println("Bitwise sorting  - "+result + " millisec");
         bitwiseSorter.printArray();
 
-//        SortMachine sortMachine = new SortMachine(mass);
-//        sortMachine.setShowTimeResults(true);
-//        sortMachine.print();
-//        sortMachine.quickSort();
-//        sortMachine.print();
-//        sortMachine.setNewArray(mass3);
-//        sortMachine.methodShellSort();
-//        sortMachine.print();
-//        sortMachine.setNewArray(mass2);
-//        sortMachine.mergeSort();
-//        sortMachine.print();
-//        sortMachine.setNewArray(mass4);
-//        sortMachine.bubbleSort();
-//        sortMachine.print();
-//        sortMachine.setNewArray(mass5);
-//        sortMachine.selectedSort();
-//        sortMachine.print();
-//        sortMachine.setNewArray(mass6);
-//        sortMachine.insertionSort();
-//        sortMachine.print();
+        SortMachine sortMachine = new SortMachine(mass);
+        sortMachine.setShowTimeResults(true);
+        sortMachine.print();
+        sortMachine.quickSort();
+        sortMachine.print();
+        sortMachine.setNewArray(mass3);
+        sortMachine.methodShellSort();
+        sortMachine.print();
+        sortMachine.setNewArray(mass2);
+        sortMachine.mergeSort();
+        sortMachine.print();
+        sortMachine.setNewArray(mass4);
+        sortMachine.bubbleSort();
+        sortMachine.print();
+        sortMachine.setNewArray(mass5);
+        sortMachine.selectedSort();
+        sortMachine.print();
+        sortMachine.setNewArray(mass6);
+        sortMachine.insertionSort();
+        sortMachine.print();
     }
 
     public static int [] getArray (int size){

@@ -11,7 +11,7 @@ public class BitwiseSorter {
     public BitwiseSorter(int[] mainArray) {
         this.mainArray = mainArray;
         list = new ArrayList<>(mainArray.length);
-        toList();
+        toStringList();
         for (int i=0; i<10; i++){
             digits[i] = new LinkedList();
         }
@@ -20,21 +20,21 @@ public class BitwiseSorter {
     public void setNewArray(int[] newArray) {
         mainArray = newArray;
         list = new ArrayList<>(mainArray.length);
-        toList();
+        toStringList();
     }
 
-    private void toList(){
+    private void toStringList(){
         for (int i=0; i<mainArray.length; i++){
             String value = Integer.toString(mainArray[i]);
             if (value.length()> lengthBits){
                 lengthBits = value.length();
             }
         }
-        for (int i=0; i<mainArray.length; i++){
-            String temp = Integer.toString(mainArray[i]);
-            if (temp.length()< lengthBits) {
-                while (temp.length()< lengthBits){
-                    temp = "0"+temp;
+        for (int aMainArray : mainArray) {
+            String temp = Integer.toString(aMainArray);
+            if (temp.length() < lengthBits) {
+                while (temp.length() < lengthBits) {
+                    temp = "0" + temp;
                 }
             }
             list.add(temp);
