@@ -16,28 +16,20 @@ public class StartClass {
         bitwiseSorter.bitwiseSort();
         long result = System.currentTimeMillis() - begin;
         System.out.println("Bitwise sorting  - "+result + " millisec");
-        bitwiseSorter.printArray();
 
         SortMachine sortMachine = new SortMachine(mass);
         sortMachine.setShowTimeResults(true);
-        sortMachine.print();
         sortMachine.quickSort();
-        sortMachine.print();
         sortMachine.setNewArray(mass3);
-        sortMachine.methodShellSort();
-        sortMachine.print();
-        sortMachine.setNewArray(mass2);
         sortMachine.mergeSort();
-        sortMachine.print();
+        sortMachine.setNewArray(mass2);
+        sortMachine.methodShellSort();
         sortMachine.setNewArray(mass4);
-        sortMachine.bubbleSort();
-        sortMachine.print();
+        sortMachine.insertionSort();
         sortMachine.setNewArray(mass5);
         sortMachine.selectedSort();
-        sortMachine.print();
         sortMachine.setNewArray(mass6);
-        sortMachine.insertionSort();
-        sortMachine.print();
+        sortMachine.bubbleSort();
     }
 
     public static int [] getArray (int size){
