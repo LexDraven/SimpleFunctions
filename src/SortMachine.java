@@ -103,7 +103,7 @@ public class SortMachine<T extends Comparable> {
                 startTime = System.currentTimeMillis();
             } else {
                 long totalTime = System.currentTimeMillis() - startTime;
-                System.out.println("Ends " + nameSortType + " sort, time - " + totalTime);
+                System.out.println("Ends " + nameSortType + " sort, time - " + totalTime + " millisec");
             }
         }
     }

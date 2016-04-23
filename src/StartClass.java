@@ -43,7 +43,7 @@ public class StartClass {
     public static int [] getArray (int size){
         int [] mass = new int[size];
         for (int i=0; i<mass.length;i++){
-            mass[i] = (int)(Math.random()*(1000));
+            mass[i] = (int)(Math.random()*(30000));
         }
         return mass;
     }
