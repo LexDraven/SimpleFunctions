@@ -76,7 +76,6 @@ public class BitwiseSorter {
     }
 
     public void printArray() {
-        backToInt();
         int max = 100;
         for (int t : mainArray) {
             System.out.print(t + ", ");

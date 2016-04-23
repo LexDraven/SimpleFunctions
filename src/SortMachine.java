@@ -19,6 +19,23 @@ public class SortMachine<T extends Comparable> {
     private int count = 0;
     private boolean showTimeResults = false;
     private long startTime = 0;
+    private String actualSortMethodName="";
+
+    public SortMachine(T[] newArray) {
+        setNewArray(newArray);
+    }
+
+    //конструктор принимает на вход 2 массива и сразу сортирует их слиянием
+    public SortMachine(T[] firstArray, T[] secondArray) {
+        tempArray = firstArray;
+        mergeArrays(firstArray, secondArray);
+        count = tempArray.length;
+    }
+
+    public SortMachine(Collection<T> collection) {
+        tempArray = (T[]) collection.toArray();
+        count = tempArray.length;
+    }
 
     public T[] getAsArray() {
         return tempArray;
@@ -32,44 +49,20 @@ public class SortMachine<T extends Comparable> {
         return Arrays.asList(tempArray);
     }
 
-    public boolean isShowTimeResults() {
+    public boolean showSortingSpeed() {
         return showTimeResults;
     }
 
     public void setNewArray(T[] tempArray) {
         this.tempArray = tempArray;
-        if (!isComparable()) {
-            System.out.println("Cant be sorted!");
-        } else {
-            count = tempArray.length;
-            if (count == 0) {
-                System.out.println("Empty array!");
-            }
+        count = tempArray.length;
+        if (count == 0) {
+            System.out.println("Empty array!");
         }
     }
 
-    public void setShowTimeResults(boolean showTimeResults) {
-        this.showTimeResults = showTimeResults;
-    }
-
-    public SortMachine(T[] newArray) {
-        setNewArray(newArray);
-    }
-
-    public SortMachine(T[] firstArray, T[] secondArray) {
-        tempArray = firstArray;
-        mergeArrays(firstArray, secondArray);
-        count = tempArray.length;
-    }
-
-    public SortMachine(Collection<T> collection) {
-        tempArray = (T[]) collection.toArray();
-        count = tempArray.length;
-    }
-
-    private boolean isComparable() {
-        T temp = tempArray[0];
-        return temp instanceof Comparable;
+    public void setShowSortingSpeed(boolean showSortingSpeed) {
+        this.showTimeResults = showSortingSpeed;
     }
 
     private void changePlaces(int index1, int index2) {
@@ -79,7 +72,8 @@ public class SortMachine<T extends Comparable> {
     }
 
     public void bubbleSort() {
-        showTimeResults("bubble", true);
+        actualSortMethodName = "bubble";
+        showTimeResults(true);
         int begin, end;
         for (begin = count - 1; begin > 1; begin--) {
             for (end = 0; end < begin; end++) {
@@ -88,12 +82,13 @@ public class SortMachine<T extends Comparable> {
                 }
             }
         }
-        showTimeResults("bubble", false);
+        showTimeResults(false);
     }
 
     public void selectedSort() {
         int begin, end, min;
-        showTimeResults("select", true);
+        actualSortMethodName = "select";
+        showTimeResults(true);
         for (begin = 0; begin < count - 1; begin++) {
             min = begin;
             for (end = begin + 1; end < count; end++) {
@@ -103,24 +98,25 @@ public class SortMachine<T extends Comparable> {
             }
             changePlaces(begin, min);
         }
-        showTimeResults("select", false);
+        showTimeResults(false);
     }
 
-    private void showTimeResults(String nameSortType, boolean isBegin) {
-        if (isShowTimeResults()) {
+    private void showTimeResults(boolean isBegin) {
+        if (showSortingSpeed()) {
             if (isBegin) {
-                System.out.println("Start " + nameSortType + " sort");
+                System.out.println("Start " + actualSortMethodName + " sort");
                 startTime = System.currentTimeMillis();
             } else {
                 long totalTime = System.currentTimeMillis() - startTime;
-                System.out.println("Ends " + nameSortType + " sort, time - " + totalTime + " millisec");
+                System.out.println("Ends " + actualSortMethodName + " sort, time - " + totalTime + " milliseconds");
             }
         }
     }
 
     public void insertionSort() {
         int begin, end;
-        showTimeResults("insertion", true);
+        actualSortMethodName = "insertion";
+        showTimeResults(true);
         for (begin = 0; begin < count; begin++) {
             T temp = tempArray[begin];
             end = begin;
@@ -130,7 +126,7 @@ public class SortMachine<T extends Comparable> {
             }
             tempArray[end] = temp;
         }
-        showTimeResults("insertion", false);
+        showTimeResults(false);
     }
 
     public void mergeArrays(T[] first, T[] second) {
@@ -138,12 +134,12 @@ public class SortMachine<T extends Comparable> {
         if (!temp.isSorted()) {
             temp.mergeSort();
         }
-        first =(T[]) temp.getAsArray();
+        first = (T[]) temp.getAsArray();
         temp.setNewArray(second);
         if (!temp.isSorted()) {
             temp.mergeSort();
         }
-        second = (T[])temp.getAsArray();
+        second = (T[]) temp.getAsArray();
         ArrayList<T> last = new ArrayList<>(first.length + second.length);
         int aDex, bDex, cDex;
         aDex = bDex = cDex = 0;
@@ -176,9 +172,10 @@ public class SortMachine<T extends Comparable> {
 
     public void mergeSort() {
         T[] newArray = tempArray.clone();
-        showTimeResults("merge",true);
+        actualSortMethodName = "merge";
+        showTimeResults(true);
         recMergeSort(newArray, 0, count - 1);
-        showTimeResults("merge",false);
+        showTimeResults(false);
     }
 
     private void merge(T[] array, int lower, int middle, int upper) {
@@ -216,46 +213,48 @@ public class SortMachine<T extends Comparable> {
         System.out.println();
     }
 
-    public boolean isSorted(){
-        if (tempArray.length<1) {
+    public boolean isSorted() {
+        if (tempArray.length < 1) {
             return false;
         }
         T minimum = tempArray[0];
-        for (T temp:tempArray){
-            if (minimum.compareTo(temp)>0){
+        for (T temp : tempArray) {
+            if (minimum.compareTo(temp) > 0) {
                 return false;
             }
         }
         return true;
     }
 
-    public void methodShellSort(){
-        showTimeResults("Shell method",true);
+    public void methodShellSort() {
+        actualSortMethodName = "Shell method";
+        showTimeResults(true);
         int begin, end;
         T temp;
         int h = 1;
-        while (h<=count/3){
-            h=h*3+1;
+        while (h <= count / 3) {
+            h = h * 3 + 1;
         }
         while (h > 0) {
-            for (end=h;end<count;end++) {
+            for (end = h; end < count; end++) {
                 temp = tempArray[end];
                 begin = end;
                 while (begin > h - 1 && (tempArray[begin - h].compareTo(temp) >= 0)) {
-                    tempArray[begin] = tempArray[begin-h];
-                    begin-=h;
+                    tempArray[begin] = tempArray[begin - h];
+                    begin -= h;
                 }
                 tempArray[begin] = temp;
             }
-            h=(h-1)/3;
+            h = (h - 1) / 3;
         }
-        showTimeResults("Shell method",false);
+        showTimeResults(false);
     }
 
-    public void quickSort(){
-        showTimeResults("quick",true);
-        recQuickSort(0,count-1);
-        showTimeResults("quick",false);
+    public void quickSort() {
+        actualSortMethodName = "quick";
+        showTimeResults(true);
+        recQuickSort(0, count - 1);
+        showTimeResults(false);
     }
 
     private void recQuickSort(int left, int right) {
@@ -263,26 +262,25 @@ public class SortMachine<T extends Comparable> {
             return;
         } else {
             T pivot = tempArray[right];
-            int partition = partIt(left,right,pivot);
-            recQuickSort(left,partition-1);
-            recQuickSort(partition+1,right);
+            int partition = partIt(left, right, pivot);
+            recQuickSort(left, partition - 1);
+            recQuickSort(partition + 1, right);
         }
     }
 
     private int partIt(int left, int right, T pivot) {
-        int leftP = left-1;
+        int leftP = left - 1;
         int rightP = right;
-        while (true){
-            while (tempArray[++leftP].compareTo(pivot)<0);
-            while (rightP>0 && tempArray[--rightP].compareTo(pivot)>0);
+        while (true) {
+            while (tempArray[++leftP].compareTo(pivot) < 0) ;
+            while (rightP > 0 && tempArray[--rightP].compareTo(pivot) > 0) ;
             if (leftP >= rightP) {
                 break;
-            }
-            else {
-                changePlaces(leftP,rightP);
+            } else {
+                changePlaces(leftP, rightP);
             }
         }
-        changePlaces(leftP,right);
+        changePlaces(leftP, right);
         return leftP;
     }
 

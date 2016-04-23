@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class StartClass {
 
     public static void main(String[] args) {
@@ -18,7 +16,7 @@ public class StartClass {
         System.out.println("Bitwise sorting  - "+result + " millisec");
 
         SortMachine sortMachine = new SortMachine(mass);
-        sortMachine.setShowTimeResults(true);
+        sortMachine.setShowSortingSpeed(true);
         sortMachine.quickSort();
         sortMachine.setNewArray(mass3);
         sortMachine.mergeSort();
