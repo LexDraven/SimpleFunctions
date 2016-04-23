@@ -124,6 +124,16 @@ public class SortMachine<T extends Comparable> {
     }
 
     public void mergeArrays(T[] first, T[] second) {
+        SortMachine temp = new SortMachine(first);
+        if (!temp.isSorted()) {
+            temp.mergeSort();
+        }
+        first =(T[]) temp.getAsArray();
+        temp.setNewArray(second);
+        if (!temp.isSorted()) {
+            temp.mergeSort();
+        }
+        second = (T[])temp.getAsArray();
         ArrayList<T> last = new ArrayList<>(first.length + second.length);
         int aDex, bDex, cDex;
         aDex = bDex = cDex = 0;
@@ -185,8 +195,6 @@ public class SortMachine<T extends Comparable> {
         }
     }
 
-
-
     public void print() {
         int max = 100;
         for (T t : tempArray) {
@@ -197,6 +205,17 @@ public class SortMachine<T extends Comparable> {
             }
         }
         System.out.println();
+    }
+
+    public boolean isSorted(){
+        T minimum = tempArray[0];
+        for (T temp:tempArray){
+            if (minimum.compareTo(temp)>0){
+                showTimeResults("check",false);
+                return false;
+            }
+        }
+        return true;
     }
 
 }

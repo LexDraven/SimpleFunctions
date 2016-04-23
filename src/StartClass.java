@@ -20,8 +20,7 @@ public class StartClass {
         sortMachine.print();
         sortMachine.insertionSort();
         sortMachine.print();
-
-
+        System.out.println(sortMachine.isSorted());
     }
 
     public static Integer [] getArray (int size){
