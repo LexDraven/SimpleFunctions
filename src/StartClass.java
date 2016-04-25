@@ -4,6 +4,7 @@ import sun.misc.GC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class StartClass {
 
@@ -38,7 +39,7 @@ public class StartClass {
 
         Integer [] massiv = getArrayInteger(10000);
         long begin = System.currentTimeMillis();
-        BinaryTree tree = new BinaryTree(Arrays.asList(massiv));
+        BinaryTree tree = new BinaryTree(massiv);
         long end = System.currentTimeMillis() - begin;
         System.out.println("Create "+end);
         begin = System.currentTimeMillis();
@@ -71,7 +72,7 @@ public class StartClass {
         begin = System.currentTimeMillis();
         for (int i = 0; i<10000; i++) {
             Integer int1 = (int)(Math.random()*(1000));
-            arrayList.add(arrayList.size()-10,int1);
+            arrayList.add(arrayList.size()-1000,int1);
         }
         end = System.currentTimeMillis() - begin;
         System.out.println("Add al "+end);
@@ -80,7 +81,27 @@ public class StartClass {
             Integer int1 = (int)(Math.random()*(1000));
             arrayList.contains(int1);
         }
-        System.out.println("Contains al"+end);
+        System.out.println("Contains al "+end);
+
+        Integer [] massiv2 = getArrayInteger(10000);
+        begin = System.currentTimeMillis();
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        linkedList.addAll(Arrays.asList(massiv1));
+        end = System.currentTimeMillis() - begin;
+        System.out.println("Create lilist "+end);
+        begin = System.currentTimeMillis();
+        for (int i = 0; i<10000; i++) {
+            Integer int1 = (int)(Math.random()*(1000));
+            linkedList.add(linkedList.size()-1000,int1);
+        }
+        end = System.currentTimeMillis() - begin;
+        System.out.println("Add lilist "+end);
+        begin = System.currentTimeMillis();
+        for (int i = 0; i<1000; i++) {
+            Integer int1 = (int)(Math.random()*(1000));
+            linkedList.contains(int1);
+        }
+        System.out.println("Contains lilist "+end);
 
     }
 
