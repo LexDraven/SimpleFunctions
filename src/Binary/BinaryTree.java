@@ -8,22 +8,24 @@ public class BinaryTree <T extends Comparable> {
     private int size=0;
 
     public BinaryTree (T [] array) {
-        for (T temp : array) {
-            insertElement(temp);
-            size++;
-        }
+        addAll(array);
     }
 
     public BinaryTree (Collection <T> collection) {
-        while (collection.iterator().hasNext()) {
-            insertElement(collection.iterator().next());
-            size++;
-        }
+        T[] newArray = (T[]) collection.toArray();
+        addAll(newArray);
     }
 
     public void clear(){
         root = null;
         size=0;
+    }
+
+    public void addAll (T[] array){
+        for (T temp : array) {
+            insertElement(temp);
+            size++;
+        }
     }
 
     public boolean isEmpty (){

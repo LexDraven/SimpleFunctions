@@ -1,5 +1,6 @@
 import Binary.BinaryTree;
 import Binary.Branch;
+import sun.misc.GC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +35,10 @@ public class StartClass {
 //        sortMachine.selectedSort();
 //        sortMachine.setNewArray(mass6);
 //        sortMachine.bubbleSort();
+
         Integer [] massiv = getArrayInteger(10000);
         long begin = System.currentTimeMillis();
-        BinaryTree tree = new BinaryTree(massiv);
+        BinaryTree tree = new BinaryTree(Arrays.asList(massiv));
         long end = System.currentTimeMillis() - begin;
         System.out.println("Create "+end);
         begin = System.currentTimeMillis();
