@@ -36,72 +36,20 @@ public class StartClass {
 //        sortMachine.selectedSort();
 //        sortMachine.setNewArray(mass6);
 //        sortMachine.bubbleSort();
-
-        Integer [] massiv = getArrayInteger(10000);
-        long begin = System.currentTimeMillis();
+        Integer [] massiv = {5,12,6,2,1,3,4,9};
         BinaryTree tree = new BinaryTree(massiv);
-        long end = System.currentTimeMillis() - begin;
-        System.out.println("Create "+end);
-        begin = System.currentTimeMillis();
-        for (int i = 0; i<10000; i++) {
-            Integer int1 = (int)(Math.random()*(1000));
-            tree.insertElement(int1);
-        }
-        end = System.currentTimeMillis() - begin;
-        System.out.println("Add "+end);
-        begin = System.currentTimeMillis();
-        for (int i = 0; i<1000; i++) {
-            Integer int1 = (int)(Math.random()*(1000));
-            tree.contains(int1);
-        }
-        end = System.currentTimeMillis() - begin;
-        System.out.println("Contains "+end);
-        System.out.println(tree.isEmpty());
-        System.out.println(tree.getMaximum());
-        System.out.println(tree.getMinimum());
-        tree.clear();
-        System.out.println(tree.isEmpty());
+        System.out.println("Size:" + tree.getSize());
+        System.out.println("Min:" + tree.getMinimum());
+        System.out.println("Max:" + tree.getMaximum());
+        tree.displayAll();
+        System.out.println();
+        System.out.println(tree.contains(13));
+        Integer i = 3;
+        System.out.println("delete "+i);
+        tree.deleteElement(i);
+        tree.displayAll();
 
 
-        Integer [] massiv1 = getArrayInteger(10000);
-        begin = System.currentTimeMillis();
-        ArrayList <Integer> arrayList = new ArrayList<>();
-        arrayList.addAll(Arrays.asList(massiv1));
-        end = System.currentTimeMillis() - begin;
-        System.out.println("Create al "+end);
-        begin = System.currentTimeMillis();
-        for (int i = 0; i<10000; i++) {
-            Integer int1 = (int)(Math.random()*(1000));
-            arrayList.add(arrayList.size()-1000,int1);
-        }
-        end = System.currentTimeMillis() - begin;
-        System.out.println("Add al "+end);
-        begin = System.currentTimeMillis();
-        for (int i = 0; i<1000; i++) {
-            Integer int1 = (int)(Math.random()*(1000));
-            arrayList.contains(int1);
-        }
-        System.out.println("Contains al "+end);
-
-        Integer [] massiv2 = getArrayInteger(10000);
-        begin = System.currentTimeMillis();
-        LinkedList<Integer> linkedList = new LinkedList<>();
-        linkedList.addAll(Arrays.asList(massiv1));
-        end = System.currentTimeMillis() - begin;
-        System.out.println("Create lilist "+end);
-        begin = System.currentTimeMillis();
-        for (int i = 0; i<10000; i++) {
-            Integer int1 = (int)(Math.random()*(1000));
-            linkedList.add(linkedList.size()-1000,int1);
-        }
-        end = System.currentTimeMillis() - begin;
-        System.out.println("Add lilist "+end);
-        begin = System.currentTimeMillis();
-        for (int i = 0; i<1000; i++) {
-            Integer int1 = (int)(Math.random()*(1000));
-            linkedList.contains(int1);
-        }
-        System.out.println("Contains lilist "+end);
 
     }
 

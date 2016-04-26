@@ -1,7 +1,7 @@
 package Binary;
 
 
-public class Branch <T extends Comparable> implements Comparable{
+public class Branch <T extends Comparable> implements Comparable, Cloneable{
     private T element;
     private Branch leftChild;
     private Branch rightChild;
@@ -42,6 +42,13 @@ public class Branch <T extends Comparable> implements Comparable{
 
     public String toString(){
         return element.toString();
+    }
+
+    public  Branch clone() {
+        Branch newBranch = new Branch(element);
+        newBranch.setLeftChild(this.getLeftChild());
+        newBranch.setRightChild(this.getRightChild());
+        return newBranch;
     }
 }
 
