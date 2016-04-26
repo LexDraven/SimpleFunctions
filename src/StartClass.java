@@ -36,18 +36,28 @@ public class StartClass {
 //        sortMachine.selectedSort();
 //        sortMachine.setNewArray(mass6);
 //        sortMachine.bubbleSort();
-        Integer [] massiv = {5,12,6,2,1,3,4,9};
+        Integer [] massiv = getArrayInteger(1000);
         BinaryTree tree = new BinaryTree(massiv);
         System.out.println("Size:" + tree.getSize());
         System.out.println("Min:" + tree.getMinimum());
         System.out.println("Max:" + tree.getMaximum());
-        tree.displayAll();
-        System.out.println();
-        System.out.println(tree.contains(13));
-        Integer i = 3;
-        System.out.println("delete "+i);
-        tree.deleteElement(i);
-        tree.displayAll();
+        long begin = System.currentTimeMillis();
+        for (int i=100; i<500; i++){
+            Integer inter = i;
+            tree.deleteElement(inter);
+        }
+        long end = System.currentTimeMillis()-begin;
+        System.out.println("Time to delete "+end);
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.addAll(Arrays.asList(massiv));
+        begin = System.currentTimeMillis();
+        for (int i=100; i<500; i++){
+            Integer inter = i;
+            arrayList.remove(inter);
+        }
+        end = System.currentTimeMillis()-begin;
+        System.out.println("Time to delete al "+end);
+
 
 
 
