@@ -1,9 +1,9 @@
 package Binary;
-
-
 import java.util.Collection;
+import java.util.Stack;
 
-public class BinaryTree<T extends Comparable> {
+
+public class BinaryTree<T extends Comparable>  {
     private Branch root;
     private int size = 0;
 
@@ -14,6 +14,10 @@ public class BinaryTree<T extends Comparable> {
     public BinaryTree(Collection<T> collection) {
         T[] newArray = (T[]) collection.toArray();
         addAll(newArray);
+    }
+
+    public BinaryTree(T element) {
+        insertElement(element);
     }
 
     public void clear() {
@@ -77,25 +81,17 @@ public class BinaryTree<T extends Comparable> {
         }
     }
 
-    private void visitAllInOrder(Branch mainRoot, boolean needDisplay) {
+    private void visitAllInOrder(Branch mainRoot) {
         if (mainRoot != null) {
             size++;
-            if (needDisplay) {
-                System.out.print(mainRoot + ", ");
-            }
-            visitAllInOrder(mainRoot.getLeftChild(), needDisplay);
-            visitAllInOrder(mainRoot.getRightChild(), needDisplay);
+            visitAllInOrder(mainRoot.getLeftChild());
+            visitAllInOrder(mainRoot.getRightChild());
         }
-    }
-
-    public void displayAll() {
-        size = 0;
-        visitAllInOrder(root, true);
     }
 
     private void countAllElements() {
         size = 0;
-        visitAllInOrder(root, false);
+        visitAllInOrder(root);
     }
 
     public Branch getMinimum() {
@@ -192,4 +188,5 @@ public class BinaryTree<T extends Comparable> {
     public Branch getRoot() {
         return root;
     }
+
 }

@@ -45,6 +45,11 @@ public class Branch <T extends Comparable> implements Comparable, Cloneable{
     }
 
     public  Branch clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         Branch newBranch = new Branch(element);
         newBranch.setLeftChild(this.getLeftChild());
         newBranch.setRightChild(this.getRightChild());
