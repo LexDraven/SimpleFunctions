@@ -79,23 +79,23 @@ public class BinaryTree<T extends Comparable> {
 
     private void visitAllInOrder(Branch mainRoot, boolean needDisplay) {
         if (mainRoot != null) {
+            size++;
             if (needDisplay) {
-                System.out.print(mainRoot+", ");
-                size++;
+                System.out.print(mainRoot + ", ");
             }
-            visitAllInOrder(mainRoot.getLeftChild(),needDisplay);
-            visitAllInOrder(mainRoot.getRightChild(),needDisplay);
+            visitAllInOrder(mainRoot.getLeftChild(), needDisplay);
+            visitAllInOrder(mainRoot.getRightChild(), needDisplay);
         }
     }
 
-    public void displayAll(){
+    public void displayAll() {
         size = 0;
-        visitAllInOrder(root,true);
+        visitAllInOrder(root, true);
     }
 
-    private void countAllElements(){
+    private void countAllElements() {
         size = 0;
-        visitAllInOrder(root,false);
+        visitAllInOrder(root, false);
     }
 
     public Branch getMinimum() {
@@ -138,13 +138,11 @@ public class BinaryTree<T extends Comparable> {
     }
 
     public boolean deleteElement(T element) {
-        if (!contains(element)){
-            return false;
-        }
         Branch current = root;
-        Branch parent;
+        Branch parent = root;
         boolean isLeftChild = true;
         while (current.getElement().compareTo(element) != 0) {
+            parent = current;
             if (element.compareTo(current.getElement()) < 0) {
                 isLeftChild = true;
                 current = current.getLeftChild();
@@ -152,79 +150,42 @@ public class BinaryTree<T extends Comparable> {
                 isLeftChild = false;
                 current = current.getRightChild();
             }
-            parent = current;
-            if (current.getLeftChild() == null && current.getRightChild() == null) {
-                System.out.println("null null if");
-                if (current == root) {
-                    root = null;
-                } else {
-                    if (isLeftChild) {
-                        parent.setLeftChild(null);
-                    }
-                    else {
-                        parent.setRightChild(null);
-                    }
-                }
-            }
-            else {
-                if (current.getRightChild()==null){
-                    if (current == root) {
-                        root = current.getLeftChild();
-                    } else {
-                        if (isLeftChild) {
-                            parent.setLeftChild(current.getLeftChild());
-                        }
-                        else {
-                            parent.setRightChild(current.getLeftChild());
-                        }
-                    }
-                }
-                else {
-                    if (current.getLeftChild()==null){
-                        if (current == root) {
-                            root = current.getRightChild();
-                        } else {
-                            if (isLeftChild) {
-                                parent.setLeftChild(current.getRightChild());
-                            }
-                            else {
-                                parent.setRightChild(current.getRightChild());
-                            }
-                        }
-                    }
-                    else {
-                        Branch successor = getSuccessor(current);
-                        if (current == root) {
-                            root = successor;
-                        } else {
-                            if (isLeftChild) {
-                                parent.setLeftChild(successor);
-                            }
-                            else {
-                                parent.setRightChild(successor);
-                            }
-                        }
-                    }
-                }
+            if (current == null) {
+                return false;
             }
         }
+        if (current.getLeftChild() == null && current.getRightChild() == null) {
+            setAllToDelete(current, parent, null, isLeftChild);
+            return true;
+        }
+        if (current.getRightChild() == null) {
+            setAllToDelete(current, parent, current.getLeftChild(), isLeftChild);
+            return true;
+        }
+        if (current.getLeftChild() == null) {
+            setAllToDelete(current, parent, current.getRightChild(), isLeftChild);
+            return true;
+        }
+        Branch successor = getSuccessor(current);
+        setAllToDelete(current, parent, successor, isLeftChild);
+        successor.setLeftChild(current.getLeftChild());
         return true;
     }
 
-    private void setAllToDelete(Branch current,Branch parent, Branch element, boolean isLeftChild) {
+    private void setAllToDelete(Branch current, Branch parent, Branch element, boolean isLeftChild) {
         if (current == root) {
             root = element;
         } else {
             if (isLeftChild) {
                 parent.setLeftChild(element);
-            }
-            else {
+            } else {
                 parent.setRightChild(element);
             }
         }
     }
 
     public int getSize() {
+        countAllElements();
         return size;
     }
 
