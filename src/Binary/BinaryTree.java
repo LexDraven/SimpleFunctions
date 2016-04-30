@@ -1,11 +1,13 @@
 package Binary;
 import java.util.Collection;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class BinaryTree<T extends Comparable>  {
     private Branch root;
     private int size = 0;
+    private List<T> returnList;
 
     public BinaryTree(T[] array) {
         addAll(array);
@@ -29,6 +31,14 @@ public class BinaryTree<T extends Comparable>  {
         for (T temp : array) {
             insertElement(temp);
         }
+    }
+
+    public List<T> getAsList(){
+        returnList = new LinkedList<T>();
+        countAllElements();
+        List<T> tempList = returnList;
+        returnList = null;
+        return tempList;
     }
 
     public boolean isEmpty() {
@@ -83,6 +93,9 @@ public class BinaryTree<T extends Comparable>  {
 
     private void visitAllInOrder(Branch mainRoot) {
         if (mainRoot != null) {
+            if (returnList!=null) {
+                returnList.add((T) mainRoot.getElement());
+            }
             size++;
             visitAllInOrder(mainRoot.getLeftChild());
             visitAllInOrder(mainRoot.getRightChild());
@@ -189,4 +202,61 @@ public class BinaryTree<T extends Comparable>  {
         return root;
     }
 
+}
+
+
+class Branch <T extends Comparable> implements Comparable, Cloneable{
+    private T element;
+    private Branch leftChild;
+    private Branch rightChild;
+
+    public Branch(T element) {
+        this.element = element;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Branch newBranch = (Branch) o;
+        return this.element.compareTo(newBranch.element);
+    }
+
+    public T getElement() {
+        return element;
+    }
+
+    public Branch getLeftChild() {
+        return leftChild;
+    }
+
+    public Branch getRightChild() {
+        return rightChild;
+    }
+
+    public void setElement(T element) {
+        this.element = element;
+    }
+
+    public void setLeftChild(Branch leftChild) {
+        this.leftChild = leftChild;
+    }
+
+    public void setRightChild(Branch rightChild) {
+        this.rightChild = rightChild;
+    }
+
+    public String toString(){
+        return element.toString();
+    }
+
+    public  Branch clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        Branch newBranch = new Branch(element);
+        newBranch.setLeftChild(this.getLeftChild());
+        newBranch.setRightChild(this.getRightChild());
+        return newBranch;
+    }
 }

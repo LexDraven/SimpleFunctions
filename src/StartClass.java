@@ -1,10 +1,5 @@
 import Binary.BinaryTree;
-import Binary.Branch;
-import sun.misc.GC;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.List;
 
 public class StartClass {
 
@@ -36,31 +31,15 @@ public class StartClass {
 //        sortMachine.selectedSort();
 //        sortMachine.setNewArray(mass6);
 //        sortMachine.bubbleSort();
-        Integer [] massiv = getArrayInteger(1000);
+        Integer [] massiv = getArrayInteger(10);
         BinaryTree tree = new BinaryTree(massiv);
         System.out.println("Size:" + tree.getSize());
         System.out.println("Min:" + tree.getMinimum());
         System.out.println("Max:" + tree.getMaximum());
-        long begin = System.currentTimeMillis();
-        for (int i=100; i<500; i++){
-            Integer inter = i;
-            tree.deleteElement(inter);
+        List<Integer> listok = tree.getAsList();
+        for (Integer i:listok) {
+            System.out.println(i);
         }
-        long end = System.currentTimeMillis()-begin;
-        System.out.println("Time to delete "+end);
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.addAll(Arrays.asList(massiv));
-        begin = System.currentTimeMillis();
-        for (int i=100; i<500; i++){
-            Integer inter = i;
-            arrayList.remove(inter);
-        }
-        end = System.currentTimeMillis()-begin;
-        System.out.println("Time to delete al "+end);
-
-
-
-
     }
 
     public static int [] getArray (int size){
