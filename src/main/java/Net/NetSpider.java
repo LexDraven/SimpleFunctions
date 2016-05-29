@@ -10,6 +10,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class NetSpider {
@@ -18,6 +21,8 @@ public class NetSpider {
     private HashSet<String> checkedLinks;
     private HtmlUnitDriver browser;
     private String mainDomain;
+    private File textfile;
+    private PrintWriter writer;
 
     public NetSpider(String mainDomen) {
         this.mainDomain = mainDomen;
@@ -25,6 +30,13 @@ public class NetSpider {
         linksInDomain = new LinkedList<String>();
         brokenLinks = new HashMap<String, String>();
         checkedLinks = new HashSet<String>();
+        textfile = new File("broken.txt");
+        try {
+            writer = new PrintWriter(textfile);
+        } catch (FileNotFoundException e) {
+            System.out.println("can't find file!");
+            System.exit(11);
+        }
     }
 
     public void setNewDomain (String newDomain){
@@ -37,7 +49,7 @@ public class NetSpider {
     public void checkLinksInDomain(){
         linksInDomain.add(mainDomain);
         checkedLinks.add(mainDomain);
-        long begin =System.currentTimeMillis();
+        long begin = System.currentTimeMillis();
         while (!linksInDomain.isEmpty()){
             String link = linksInDomain.poll();
             browser.get(link);
@@ -54,6 +66,8 @@ public class NetSpider {
         }
         long time = (System.currentTimeMillis() - begin)/1000;
         System.out.println("Total time spent: "+time +" sec");
+        writer.flush();
+        writer.close();
     }
 
     private void getAllLinks(){
@@ -70,6 +84,8 @@ public class NetSpider {
                                 try {
                                     if (!(checkLinks(url))) {
                                         brokenLinks.put(url, browser.getCurrentUrl());
+                                        writer.print(url+" - on page "+browser.getCurrentUrl());
+                                        writer.flush();
                                     }
                                     else {
                                         if (url.startsWith(mainDomain)){
@@ -77,7 +93,7 @@ public class NetSpider {
                                         }
                                     }
                                 } catch (Exception e) {
-                                    System.out.println("Error putting links! "+e.getMessage());
+                                    System.out.println("Error adding links! "+e.getMessage());
                                 }
                             }
                         }
@@ -90,7 +106,7 @@ public class NetSpider {
     private boolean checkLinks(String URL){
         HttpResponse response = null;
         try {
-            RequestConfig config= RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(7000).build();
+            RequestConfig config= RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(3000).build();
             HttpClient client= HttpClientBuilder.create().setDefaultRequestConfig(config).build();
             HttpGet request = new HttpGet(URL);
             response = client.execute(request);
