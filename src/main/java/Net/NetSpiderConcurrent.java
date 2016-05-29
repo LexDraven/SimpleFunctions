@@ -1,11 +1,6 @@
 package Net;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
+import Simple.URLChecker;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -25,9 +20,8 @@ public class NetSpiderConcurrent {
 
     public NetSpiderConcurrent(String mainDomen) {
         this.mainDomain = mainDomen;
-        browser = new HtmlUnitDriver(false);
-        linksInDomain = new ConcurrentLinkedDeque<String>();
-        brokenLinks = new ConcurrentHashMap<String, String>();
+        linksInDomain = new ConcurrentLinkedDeque<>();
+        brokenLinks = new ConcurrentHashMap<>();
         checkedLinks = new ConcurrentHashSet<>();
         allLinks = new ConcurrentLinkedDeque<>();
     }
@@ -42,6 +36,7 @@ public class NetSpiderConcurrent {
     public void checkLinksInDomain() {
         linksInDomain.add(mainDomain);
         checkedLinks.add(mainDomain);
+        browser = new HtmlUnitDriver(false);
         long begin = System.currentTimeMillis();
         CheckRunner runner = new CheckRunner(this);
         CheckRunner runner1 = new CheckRunner(this);
@@ -74,6 +69,7 @@ public class NetSpiderConcurrent {
         }
         long time = (System.currentTimeMillis() - begin) / 1000;
         System.out.println("Total time spent: " + time + " sec");
+        browser.quit();
     }
 
     private void getAllLinks() {
@@ -84,7 +80,7 @@ public class NetSpiderConcurrent {
                 if (element != null) {
                     String url = element.getAttribute("href");
                     if (url != null && !url.contains("javascript")) {
-                        if ((!url.startsWith("mailto")) & (!url.endsWith(".jpg")) & (!url.endsWith(".png")) & (!url.endsWith(".gif"))) {
+                        if (!url.startsWith("mailto")) {
                             allLinks.add(url);
                         }
                     }
@@ -121,12 +117,12 @@ public class NetSpiderConcurrent {
 class CheckRunner implements Runnable {
     private NetSpiderConcurrent spider;
     private static volatile int number = 1;
-    private String name;
+    private URLChecker checker;
 
     CheckRunner(NetSpiderConcurrent spiderConcurrent) {
         this.spider = spiderConcurrent;
-        name = Integer.toString(number);
         number++;
+        checker = new URLChecker();
     }
 
     public static void setNumber(int number) {
@@ -137,6 +133,11 @@ class CheckRunner implements Runnable {
     public void run() {
         while (number > 0) {
             sortByGroups();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -149,29 +150,18 @@ class CheckRunner implements Runnable {
                     if (!(checkLinks(url))) {
                         spider.getBrokenLinks().put(url, spider.getBrowser().getCurrentUrl());
                     } else {
-                        if (url.startsWith(spider.getMainDomain())) {
+                        if ((url.startsWith(spider.getMainDomain()) & (!checker.isFile(url)))) {
                             spider.getLinksInDomain().add(url);
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("Error adding links! " + e.getMessage());
+                    System.err.println("Error adding links! " + e.getMessage());
                 }
             }
         }
     }
 
-
     private boolean checkLinks(String URL) {
-        HttpResponse response = null;
-        try {
-            RequestConfig config = RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(3000).build();
-            HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-            HttpGet request = new HttpGet(URL);
-            response = client.execute(request);
-        } catch (Exception e) {
-            System.out.println(URL + " " + e.getMessage());
-            return false;
-        }
-        return response.getStatusLine().getStatusCode() == 200;
+        return checker.checkLinks(URL);
     }
 }

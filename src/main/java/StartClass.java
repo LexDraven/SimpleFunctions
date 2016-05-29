@@ -4,10 +4,11 @@ import Net.NetSpiderConcurrent;
 public class StartClass {
 
     public static void main(String[] args) {
-        NetSpider netSpider = new NetSpider("https://slemma.com/");
+        NetSpider netSpider = new NetSpider("http://sc1.okis.ru/");
         netSpider.checkLinksInDomain();
-        NetSpiderConcurrent spider = new NetSpiderConcurrent("https://slemma.com/");
+        NetSpiderConcurrent spider = new NetSpiderConcurrent("http://sc1.okis.ru/");
         spider.checkLinksInDomain();
+
     }
 
     public static int [] getArray (int size){
@@ -33,4 +34,5 @@ public class StartClass {
         }
         return mass;
     }
+
 }

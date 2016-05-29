@@ -1,11 +1,6 @@
 package Net;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
+import Simple.URLChecker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -21,16 +16,16 @@ public class NetSpider {
     private HashSet<String> checkedLinks;
     private HtmlUnitDriver browser;
     private String mainDomain;
-    private File textfile;
     private PrintWriter writer;
+    private URLChecker checker;
 
-    public NetSpider(String mainDomen) {
-        this.mainDomain = mainDomen;
-        browser = new HtmlUnitDriver(false);
-        linksInDomain = new LinkedList<String>();
-        brokenLinks = new HashMap<String, String>();
-        checkedLinks = new HashSet<String>();
-        textfile = new File("broken.txt");
+    public NetSpider(String mainDomain) {
+        this.mainDomain = mainDomain;
+        linksInDomain = new LinkedList<>();
+        brokenLinks = new HashMap<>();
+        checkedLinks = new HashSet<>();
+        checker = new URLChecker();
+        File textfile = new File("broken.txt");
         try {
             writer = new PrintWriter(textfile);
         } catch (FileNotFoundException e) {
@@ -47,6 +42,7 @@ public class NetSpider {
     }
 
     public void checkLinksInDomain(){
+        browser = new HtmlUnitDriver(false);
         linksInDomain.add(mainDomain);
         checkedLinks.add(mainDomain);
         long begin = System.currentTimeMillis();
@@ -68,6 +64,7 @@ public class NetSpider {
         System.out.println("Total time spent: "+time +" sec");
         writer.flush();
         writer.close();
+        browser.quit();
     }
 
     private void getAllLinks(){
@@ -78,7 +75,7 @@ public class NetSpider {
                 if (element != null) {
                     String url = element.getAttribute("href");
                     if (url != null && !url.contains("javascript")) {
-                        if ((!url.startsWith("mailto")) & (!url.endsWith(".jpg")) & (!url.endsWith(".png")) & (!url.endsWith(".gif"))) {
+                        if (!url.startsWith("mailto"))  {
                             if (!checkedLinks.contains(url)) {
                                 checkedLinks.add(url);
                                 try {
@@ -88,12 +85,12 @@ public class NetSpider {
                                         writer.flush();
                                     }
                                     else {
-                                        if (url.startsWith(mainDomain)){
+                                        if ((url.startsWith(mainDomain)) & (!checker.isFile(url))){
                                             linksInDomain.add(url);
                                         }
                                     }
                                 } catch (Exception e) {
-                                    System.out.println("Error adding links! "+e.getMessage());
+                                    System.err.println("Error adding links! "+e.getMessage());
                                 }
                             }
                         }
@@ -104,17 +101,7 @@ public class NetSpider {
     }
 
     private boolean checkLinks(String URL){
-        HttpResponse response = null;
-        try {
-            RequestConfig config= RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(3000).build();
-            HttpClient client= HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-            HttpGet request = new HttpGet(URL);
-            response = client.execute(request);
-        } catch (Exception e) {
-            System.out.println(URL + " " + e.getMessage());
-            return false;
-        }
-        return  response.getStatusLine().getStatusCode()==200;
+        return  checker.checkLinks(URL);
     }
 
 }
