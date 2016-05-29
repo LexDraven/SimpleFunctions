@@ -1,9 +1,12 @@
 import Net.NetSpider;
+import Net.NetSpiderConcurrent;
 
 public class StartClass {
 
     public static void main(String[] args) {
-        NetSpider spider = new NetSpider("https://slemma.com/");
+        NetSpider netSpider = new NetSpider("https://slemma.com/");
+        netSpider.checkLinksInDomain();
+        NetSpiderConcurrent spider = new NetSpiderConcurrent("https://slemma.com/");
         spider.checkLinksInDomain();
     }
 
