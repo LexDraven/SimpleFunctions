@@ -17,20 +17,26 @@ public class NetSpider {
     private HashMap<String,String> brokenLinks;
     private HashSet<String> checkedLinks;
     private HtmlUnitDriver browser;
-    private static String mainDomen;
-
+    private String mainDomain;
 
     public NetSpider(String mainDomen) {
-        this.mainDomen = mainDomen;
+        this.mainDomain = mainDomen;
         browser = new HtmlUnitDriver(false);
         linksInDomain = new LinkedList<String>();
         brokenLinks = new HashMap<String, String>();
         checkedLinks = new HashSet<String>();
     }
 
-    public void checkLinksOnPage(){
-        linksInDomain.add(mainDomen);
-        checkedLinks.add(mainDomen);
+    public void setNewDomain (String newDomain){
+        mainDomain = newDomain;
+        linksInDomain.clear();
+        brokenLinks.clear();
+        checkedLinks.clear();
+    }
+
+    public void checkLinksInDomain(){
+        linksInDomain.add(mainDomain);
+        checkedLinks.add(mainDomain);
         long begin =System.currentTimeMillis();
         while (!linksInDomain.isEmpty()){
             String link = linksInDomain.poll();
@@ -59,19 +65,19 @@ public class NetSpider {
                     String url = element.getAttribute("href");
                     if (url != null && !url.contains("javascript")) {
                         if ((!url.startsWith("mailto")) & (!url.endsWith(".jpg")) & (!url.endsWith(".png")) & (!url.endsWith(".gif"))) {
-                            if ((!checkedLinks.contains(url)) & (!linksInDomain.contains(url))) {
+                            if (!checkedLinks.contains(url)) {
                                 checkedLinks.add(url);
                                 try {
                                     if (!(checkLinks(url))) {
                                         brokenLinks.put(url, browser.getCurrentUrl());
                                     }
                                     else {
-                                        if (url.startsWith(mainDomen)){
+                                        if (url.startsWith(mainDomain)){
                                             linksInDomain.add(url);
                                         }
                                     }
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    System.out.println("Error putting links! "+e.getMessage());
                                 }
                             }
                         }

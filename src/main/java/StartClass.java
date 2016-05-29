@@ -3,8 +3,8 @@ import Net.NetSpider;
 public class StartClass {
 
     public static void main(String[] args) {
-        NetSpider spider = new NetSpider("http://nepogibnu.ru/");
-        spider.checkLinksOnPage();
+        NetSpider spider = new NetSpider("http://vizhivai.com/");
+        spider.checkLinksInDomain();
     }
 
     public static int [] getArray (int size){
