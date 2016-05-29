@@ -10,14 +10,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class NetSpider {
     private LinkedList<String> linksInDomain;
-    private LinkedList <String> brokenLinks;
+    private HashMap<String,String> brokenLinks;
     private HashSet<String> checkedLinks;
     private HtmlUnitDriver browser;
     private static String mainDomen;
@@ -27,13 +24,14 @@ public class NetSpider {
         this.mainDomen = mainDomen;
         browser = new HtmlUnitDriver(false);
         linksInDomain = new LinkedList<String>();
-        brokenLinks = new LinkedList<String>();
+        brokenLinks = new HashMap<String, String>();
         checkedLinks = new HashSet<String>();
     }
 
     public void checkLinksOnPage(){
         linksInDomain.add(mainDomen);
         checkedLinks.add(mainDomen);
+        long begin =System.currentTimeMillis();
         while (!linksInDomain.isEmpty()){
             String link = linksInDomain.poll();
             browser.get(link);
@@ -44,10 +42,12 @@ public class NetSpider {
         System.out.println("Broken links: "+brokenLinks.size());
         if (brokenLinks.size()>0){
             System.out.println("Broken links are:");
-            for (String name :brokenLinks) {
-                System.out.println(name);
+            for (Map.Entry<String, String> pair: brokenLinks.entrySet()) {
+                System.out.println(pair.getKey()+" - on page "+pair.getValue());
             }
         }
+        long time = (System.currentTimeMillis() - begin)/1000;
+        System.out.println("Total time spent: "+time +" sec");
     }
 
     private void getAllLinks(){
@@ -58,12 +58,12 @@ public class NetSpider {
                 if (element != null) {
                     String url = element.getAttribute("href");
                     if (url != null && !url.contains("javascript")) {
-                        if (!url.startsWith("mailto")) {
-                            if ((!checkedLinks.contains(url)) & (!brokenLinks.contains(url)) & (!linksInDomain.contains(url))) {
+                        if ((!url.startsWith("mailto")) & (!url.endsWith(".jpg")) & (!url.endsWith(".png")) & (!url.endsWith(".gif"))) {
+                            if ((!checkedLinks.contains(url)) & (!linksInDomain.contains(url))) {
                                 checkedLinks.add(url);
                                 try {
                                     if (!(checkLinks(url))) {
-                                        brokenLinks.add(url);
+                                        brokenLinks.put(url, browser.getCurrentUrl());
                                     }
                                     else {
                                         if (url.startsWith(mainDomen)){
@@ -88,8 +88,9 @@ public class NetSpider {
             HttpClient client= HttpClientBuilder.create().setDefaultRequestConfig(config).build();
             HttpGet request = new HttpGet(URL);
             response = client.execute(request);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(URL + " " + e.getMessage());
+            return false;
         }
         return  response.getStatusLine().getStatusCode()==200;
     }

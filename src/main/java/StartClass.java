@@ -3,7 +3,7 @@ import Net.NetSpider;
 public class StartClass {
 
     public static void main(String[] args) {
-        NetSpider spider = new NetSpider("https://slemma.com/");
+        NetSpider spider = new NetSpider("http://nepogibnu.ru/");
         spider.checkLinksOnPage();
     }
 
