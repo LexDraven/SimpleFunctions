@@ -7,13 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class NetSpiderConcurrent {
     private ConcurrentLinkedDeque<String> linksInDomain;
     private ConcurrentLinkedDeque<String> allLinks;
-    private ConcurrentHashMap<String, String> brokenLinks;
+    private ConcurrentHashSet<String> brokenLinks;
     private ConcurrentHashSet<String> checkedLinks;
     private HtmlUnitDriver browser;
     private String mainDomain;
@@ -21,7 +20,7 @@ public class NetSpiderConcurrent {
     public NetSpiderConcurrent(String mainDomen) {
         this.mainDomain = mainDomen;
         linksInDomain = new ConcurrentLinkedDeque<>();
-        brokenLinks = new ConcurrentHashMap<>();
+        brokenLinks = new ConcurrentHashSet<>();
         checkedLinks = new ConcurrentHashSet<>();
         allLinks = new ConcurrentLinkedDeque<>();
     }
@@ -63,8 +62,8 @@ public class NetSpiderConcurrent {
         System.out.println("Broken links: " + brokenLinks.size());
         if (brokenLinks.size() > 0) {
             System.out.println("Broken links are:");
-            for (Map.Entry<String, String> pair : brokenLinks.entrySet()) {
-                System.out.println(pair.getKey() + " - on page " + pair.getValue());
+            for (String pair : brokenLinks) {
+                System.out.println(pair);
             }
         }
         long time = (System.currentTimeMillis() - begin) / 1000;
@@ -79,10 +78,8 @@ public class NetSpiderConcurrent {
             for (WebElement element : linksOnPage) {
                 if (element != null) {
                     String url = element.getAttribute("href");
-                    if (url != null && !url.contains("javascript")) {
-                        if (!url.startsWith("mailto")) {
+                    if (url != null && !url.contains("javascript") && !url.startsWith("mailto")) {
                             allLinks.add(url);
-                        }
                     }
                 }
             }
@@ -97,7 +94,7 @@ public class NetSpiderConcurrent {
         return allLinks;
     }
 
-    public ConcurrentHashMap<String, String> getBrokenLinks() {
+    public ConcurrentHashSet<String> getBrokenLinks() {
         return brokenLinks;
     }
 
@@ -133,11 +130,6 @@ class CheckRunner implements Runnable {
     public void run() {
         while (number > 0) {
             sortByGroups();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -148,7 +140,7 @@ class CheckRunner implements Runnable {
                 spider.getCheckedLinks().add(url);
                 try {
                     if (!(checkLinks(url))) {
-                        spider.getBrokenLinks().put(url, spider.getBrowser().getCurrentUrl());
+                        spider.getBrokenLinks().add(url);
                     } else {
                         if ((url.startsWith(spider.getMainDomain()) & (!checker.isFile(url)))) {
                             spider.getLinksInDomain().add(url);

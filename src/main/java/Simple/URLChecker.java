@@ -19,7 +19,7 @@ public class URLChecker {
     public boolean checkLinks(String URL){
         HttpResponse response;
         try {
-            RequestConfig config= RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(7000).build();
+            RequestConfig config= RequestConfig.custom().setCookieSpec(CookieSpecs.IGNORE_COOKIES).setSocketTimeout(8000).build();
             HttpClient client= HttpClientBuilder.create().setDefaultRequestConfig(config).build();
             HttpGet request = new HttpGet(URL);
             response = client.execute(request);
