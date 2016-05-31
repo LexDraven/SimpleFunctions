@@ -32,23 +32,23 @@ public class NetSpiderConcurrent {
         checkedLinks.clear();
     }
 
+    public void startThreads(int number){
+        Thread[] pool = new Thread[number];
+        for (int i=0; i<number; i++){
+            pool[i] = new Thread(new CheckRunner(this));
+            pool[i].setDaemon(true);
+        }
+        for (Thread tred:pool){
+            tred.start();
+        }
+    }
+
     public void checkLinksInDomain() {
         linksInDomain.add(mainDomain);
         checkedLinks.add(mainDomain);
         browser = new HtmlUnitDriver(false);
         long begin = System.currentTimeMillis();
-        CheckRunner runner = new CheckRunner(this);
-        CheckRunner runner1 = new CheckRunner(this);
-        CheckRunner runner2 = new CheckRunner(this);
-        Thread first = new Thread(runner);
-        Thread second = new Thread(runner1);
-        Thread third = new Thread(runner2);
-        first.setDaemon(true);
-        second.setDaemon(true);
-        third.setDaemon(true);
-        first.start();
-        second.start();
-        third.start();
+        startThreads(4);
         while ((!linksInDomain.isEmpty()) | (!allLinks.isEmpty())) {
             if (!linksInDomain.isEmpty()) {
                 String link = linksInDomain.poll();

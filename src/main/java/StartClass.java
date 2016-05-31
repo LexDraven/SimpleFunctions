@@ -4,9 +4,9 @@ import Net.NetSpiderConcurrent;
 public class StartClass {
 
     public static void main(String[] args) {
-        NetSpider netSpider = new NetSpider("http://rfzaem.ru/");
-        netSpider.checkLinksInDomain();
-        NetSpiderConcurrent spider = new NetSpiderConcurrent("http://rfzaem.ru/");
+//        NetSpider netSpider = new NetSpider("http://moiglaza.ru/");
+//        netSpider.checkLinksInDomain();
+        NetSpiderConcurrent spider = new NetSpiderConcurrent("http://www.camping.ru/");
         spider.checkLinksInDomain();
 
     }
