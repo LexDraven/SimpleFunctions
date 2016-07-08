@@ -10,6 +10,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import java.util.logging.Level;
 
 public class URLChecker {
+    private int statusCode;
 
     public URLChecker() {
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
@@ -27,7 +28,12 @@ public class URLChecker {
             System.err.println(URL + " error " + e.getLocalizedMessage());
             return false;
         }
+        statusCode = response.getStatusLine().getStatusCode();
         return  response.getStatusLine().getStatusCode()==200;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
     }
 
     public boolean isFile (String url){
