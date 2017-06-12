@@ -11,7 +11,7 @@ public class SlemmaOnlineChecker {
         int code = 200;
         URLChecker checker = new URLChecker();
         while (code==200){
-            checker.checkLinks("https://slemma.com");
+            checker.isLinkAlive("https://slemma.com");
             code = checker.getStatusCode();
             try {
                 Thread.sleep(300000);

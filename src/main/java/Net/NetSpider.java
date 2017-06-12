@@ -90,7 +90,7 @@ public class NetSpider {
     }
 
     private boolean checkLinks(String URL) {
-        return checker.checkLinks(URL);
+        return checker.isLinkAlive(URL);
     }
 
 }

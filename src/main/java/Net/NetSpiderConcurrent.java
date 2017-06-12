@@ -154,6 +154,6 @@ class CheckRunner implements Runnable {
     }
 
     private boolean checkLinks(String URL) {
-        return checker.checkLinks(URL);
+        return checker.isLinkAlive(URL);
     }
 }
